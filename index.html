@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><------- ASPECT BOTS BAYİLİK -------></title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://images-ext-1.discordapp.net/external/gpVRyvEyEksSFwrsr15LkhK-lHt69I_-_twl4pwrY0w/https/i.hizliresim.com/c69tjio.png?format=webp&quality=lossless">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .header h1 {
+            color: #fff;
+        }
+        .header h2 {
+            color: #bbb;
+        }
+        .search-bar {
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .search-bar input[type="text"] {
+            width: 50%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #555;
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+        }
+        .service-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .service-section div {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .service-section div::before {
+            content: "POPULER";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background-color: #e74c3c;
+            color: #fff;
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .listings {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .listing {
+            min-width: 200px;
+            max-width: 300px;
+            margin: 20px;
+            background-color: #444;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            flex: 1 1 200px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            border-radius: 15px; /* Köşeleri yuvarlatır */
+        }
+        .listing img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px 15px 0 0; /* Üst köşeleri yuvarlatır */
+        }
+        .listing:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        .shopier-button {
+            display: inline-flex;
+            align-items: center;
+            background-color: #0d348f;
+            color: #fff;
+            padding: 10px 15px;
+            text-align: center;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .shopier-button img {
+            width: 20px;
+            height: auto;
+            margin-right: 8px;
+        }
+        .shopier-button:hover {
+            transform: scale(1.1);
+        }
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #222;
+            color: #fff;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .side-menu.active {
+            transform: translateX(0);
+        }
+        .side-menu .logo-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .side-menu .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .side-menu a {
+            color: #fff;
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        .side-menu a:hover {
+            background-color: #444;
+        }
+        .menu-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 1001;
+        }
+        .blurred {
+            filter: blur(5px);
+        }
+        .no-results {
+            text-align: center;
+            color: #bbb;
+            font-size: 18px;
+            margin: 20px;
+        }
+
+        /* Popup styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .popup {
+            background-color: #666;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            width: 300px;
+        }
+        .popup .title {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .popup .subtitle {
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        .popup .privacy-box {
+            background-color: #444;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 0 auto;
+            max-width: 260px;
+        }
+        .popup .privacy-box h3 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .popup .privacy-box p {
+            color: #bbb;
+            font-size: 14px;
+        }
+        .popup .anladim-btn {
+            display: inline-block;
+            background-color: #28a745; /* Arka plan yeşil */
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            font-size: 16px;
+        }
+        .popup .anladim-btn:hover {
+            transform: scale(1.1);
+        }
+        .discord-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #7289da;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            transition: background-color 0.3s ease;
+        }
+
+        .discord-button img {
+            width: 30px;
+            height: auto;
+        }
+
+        .discord-button:hover {
+            background-color: #5b6eae;
+        }
+    </style>
+</head>
+<body>
+    <div class="side-menu" id="sideMenu">
+        <div class="logo-container">
+            <img src="https://images-ext-1.discordapp.net/external/gpVRyvEyEksSFwrsr15LkhK-lHt69I_-_twl4pwrY0w/https/i.hizliresim.com/c69tjio.png?format=webp&quality=lossless" alt="ASPECT BOTS Logo">
+            <h1>Servisler</h1>
+        </div>
+        <div class="menu-separator"></div>
+        <a href="#" onclick="filterListings('instagram')">🛒 INSTAGRAM </a>
+        <a href="#" onclick="filterListings('discord')">🛒 DISCORD </a>
+        <a href="#" onclick="filterListings('mta')">🛒 MTA </a>
+        <a href="#" onclick="filterListings('fivem')">🛒 FİVEM </a>
+        <a href="#" onclick="filterListings('minecraft')">🛒 MİNECRAFT </a>
+        <a href="#" onclick="filterListings('itemsatis')">🛒 İTEMSATİS </a>
+        <a href="https://dc-avm.vercel.app/terms.html" target="_blank">🏆 Güvence</a>
+    </div>
+    <div class="menu-button" onclick="toggleMenu()">☰</div>
+    <div class="container" id="mainContent">
+        <div class="header">
+            <h1>ASPECT BOTS BAYİLİK</h1>
+            <h2>-Yazılım Servisleri-</h2>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder=" 🔎                                                                     İLAN ARAYIN" oninput="searchListings(this.value)">
+        </div>
+        <div class="service-section">
+            <div onclick="filterListings('discord')">DİSCORD SERVİSLERİ</div>
+            <div onclick="filterListings('instagram')">İNSTAGRAM SERVİSLERİ</div>
+        </div>
+        <div class="listings" id="listings">
+            <!-- Listings will be injected here -->
+        </div>
+        <div class="no-results" id="noResults" style="display: none;">
+            İlan Yok Veya Stok Tükenmiş.
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <div class="title">Hoş Geldin !</div>
+            <div class="subtitle">www.ASPECT BOTS.online Gizlilik Hakları.</div>
+            <div class="privacy-box">
+                <h3>GİZLİLİK</h3>
+                <p>Hiç Bir veri SHOPİER / İTEM SATIŞ FATURLANDIRILMA dışında kaydedilmez</p>
+            </div>
+            <a class="anladim-btn" onclick="closePopup()">Anladım</a>
+        </div>
+    </div>
+    <div class="discord-button" onclick="window.open('https://www.discord.com', '_blank')">
+        <img src="https://media.discordapp.net/attachments/1248618378583609497/1270454965218971729/image.png?ex=66b3c2e3&is=66b27163&hm=a446d95ff757bacd4b5c41eeabad1cf07250d3aad4d82d211bcc6111ffa2fb44&=&format=webp&quality=lossless" alt="Discord Logo">
+    </div>
+    <script>
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('blurred');
+        }
+
+        function filterListings(service) {
+            const listings = document.querySelectorAll('.listing');
+            let hasVisibleListing = false;
+            listings.forEach(listing => {
+                if (listing.dataset.service.includes(service)) {
+                    listing.style.display = 'block';
+                    hasVisibleListing = true;
+                } else {
+                    listing.style.display = 'none';
+                }
+            });
+            document.getElementById('noResults').style.display = hasVisibleListing ? 'none' : 'block';
+        }
+
+        function searchListings(query) {
+            const listings = document.querySelectorAll('.listing');
+            let hasVisibleListing = false;
+            listings.forEach(listing => {
+                if (listing.dataset.name.toLowerCase().includes(query.toLowerCase())) {
+                    listing.style.display = 'block';
+                    hasVisibleListing = true;
+                } else {
+                    listing.style.display = 'none';
+                }
+            });
+            document.getElementById('noResults').style.display = hasVisibleListing ? 'none' : 'block';
+        }
+
+        function addListing(name, image, description, price, service, url) {
+            const listingContainer = document.getElementById('listings');
+            const listing = document.createElement('div');
+            listing.className = 'listing';
+            listing.dataset.name = name;
+            listing.dataset.service = service;
+            listing.onclick = () => window.open(url, '_blank');
+            listing.innerHTML = `
+                <img src="${image}" alt="${name}">
+                <h3>${name}</h3>
+                <p>${description}</p>
+                <p>${price} TL</p>
+                <a class="shopier-button" href="${url}" target="_blank">
+                    <img src="https://www.itemsatis.com/dist/img/favicon.ico" alt="Shopier Logo"> İTEM SATIŞ
+                </a>
+            `;
+            listingContainer.appendChild(listing);
+        }
+
+        // ÖRNEK : addListing('⭐️{SELF} ONLINER / V9 API / LISANSLI ⭐️', 'https://cdn.itemsatis.com/uploads/post_images/self-onliner-v9-api-lisansli-25675484.png?width=555&height=380', '', '80', 'discord', 'https://www.itemsatis.com/discord/self-onliner-v9-api-lisansli-2623505.html');
+      
+        addListing('Mesai Botu', 'https://cdn.itemsatis.com/uploads/post_images/invite-botu-altyapiyla-atilir-8444465.png?width=555&height=380', '', '107,51 TL', 'discord', 'https://www.itemsatis.com/discord/mesai-botu-2001557.html');    
+        addListing('Fivem Bot 1 Aylık Hizmeti HEPSİ VAR', 'https://cdn.itemsatis.com/uploads/post_images/fivem-bot-1-aylik-hizmeti-hepsi-var-15891591.png?width=555&height=380', '', '200,00 TL', 'fivem', 'https://www.itemsatis.com/fivem/fivem-bot-1-aylik-hizmeti-hepsi-var-2001495.html'); 
+        addListing('Yetkili Başvuru BOTU', 'https://cdn.itemsatis.com/uploads/post_images/fivem-bot-1-hizmeti-guard-ticket-moderasyon-67048998.png?width=555&height=380', '', '50,00 TL', 'discord', 'https://www.itemsatis.com/discord/yetkili-basvuru-botu-2001490.html');
+        addListing('3 GUARD BOTU İNDİRİM BÜTÜN HERSEY VAR', 'https://cdn.itemsatis.com/uploads/post_images/3-guard-botu-indirim-butun-hersey-var-98886142.png?width=555&height=380', '', '107,52 TL', 'discord', 'https://www.itemsatis.com/discord/3-guard-botu-indirim-butun-hersey-var-1995359.html');
+        
+
+        const snowContainer = document.createElement('div');
+        snowContainer.style.position = 'fixed';
+        snowContainer.style.top = '0';
+        snowContainer.style.left = '0';
+        snowContainer.style.width = '100%';
+        snowContainer.style.height = '100%';
+        snowContainer.style.pointerEvents = 'none';
+        snowContainer.style.zIndex = '9999';
+        document.body.appendChild(snowContainer);
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.style.position = 'absolute';
+            snowflake.style.top = '-10px';
+            snowflake.style.left = `${Math.random() * 100}%`;
+            snowflake.style.width = '10px';
+            snowflake.style.height = '10px';
+            snowflake.style.backgroundColor = '#fff';
+            snowflake.style.borderRadius = '50%';
+            snowflake.style.opacity = Math.random();
+            snowflake.style.transform = `translateY(${Math.random() * 10}px)`;
+            snowflake.style.transition = `transform ${Math.random() * 5 + 2}s linear`;
+
+            snowflake.addEventListener('transitionend', () => {
+                snowflake.remove();
+            });
+
+            snowContainer.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.style.transform = `translateY(${window.innerHeight}px)`;
+            }, 0);
+        }
+
+        setInterval(createSnowflake, 100);
+
+        // Popup functionality
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.remove('active');
+            document.getElementById('mainContent').classList.remove('blurred');
+        }
+
+        window.onload = () => {
+            document.getElementById('popupOverlay').classList.add('active');
+            document.getElementById('mainContent').classList.add('blurred');
+        };
+    </script>
+</body>
+</html>
